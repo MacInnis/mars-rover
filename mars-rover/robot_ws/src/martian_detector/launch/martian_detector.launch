@@ -1,0 +1,8 @@
+<launch>
+    
+    <arg name="use_sim_tim" default="true" />
+
+	<node name="object_detector" pkg="martian_detector" type="object_detector" />
+	<node name="notifier" pkg="martian_detector" type="notifier" />
+
+</launch>

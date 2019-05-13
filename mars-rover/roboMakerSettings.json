@@ -1,0 +1,114 @@
+{
+  "runConfigurations": [
+    {
+      "id": "robot-build",
+      "name": "Robot Build",
+      "type": "colcon build",
+      "cfg": {
+        "workingDir": "./mars-rover/robot_ws",
+        "cmdArgs": ""
+      }
+    },
+    {
+      "id": "robot-bundle",
+      "name": "Robot Bundle",
+      "type": "colcon bundle",
+      "cfg": {
+        "workingDir": "./mars-rover/robot_ws",
+        "cmdArgs": ""
+      }
+    },
+    {
+      "id": "simulation-build",
+      "name": "Simulation Build",
+      "type": "colcon build",
+      "cfg": {
+        "workingDir": "./mars-rover/simulation_ws",
+        "cmdArgs": ""
+      }
+    },
+    {
+      "id": "simulation-bundle",
+      "name": "Simulation Bundle",
+      "type": "colcon bundle",
+      "cfg": {
+        "workingDir": "./mars-rover/simulation_ws",
+        "cmdArgs": ""
+      }
+    },
+    {
+      "id": "sim-robot-with-simple-world",
+      "name": "Rover - simple world",
+      "type": "simulation",
+      "cfg": {
+        "simulation": {
+          "maxJobDurationInSeconds": 3600,
+          "failureBehavior": "Fail",
+          "iamRole": "arn:aws:iam::765643008125:role/robomaker_role",
+          "vpcConfig": {
+            "subnets": [
+              "subnet-04b41b1d76621447a",
+              "subnet-053bac63eb2525cb3"
+            ],
+            "securityGroups": [
+              "sg-0dbccfe27efe0ecbc"
+            ],
+            "assignPublicIp": true
+          },
+          "outputLocation": "",
+          "tags": {}
+        },
+        "robotApp": {
+          "name": "martian-detector-robot",
+          "sourceBundleFile": "./mars-rover/robot_ws/bundle/output.tar",
+          "architecture": "X86_64",
+          "s3Bucket": "ajmac-robomaker",
+          "launchConfig": {
+            "packageName": "martian_detector",
+            "launchFile": "martian_detector.launch",
+            "environmentVariables": {}
+          },
+          "robotSoftwareSuite": {
+            "name": "ROS",
+            "version": "Kinetic"
+          }
+        },
+        "simulationApp": {
+          "name": "rover-sim",
+          "sourceBundleFile": "./mars-rover/simulation_ws/bundle/output.tar",
+          "architecture": "X86_64",
+          "s3Bucket": "ajmac-robomaker",
+          "launchConfig": {
+            "packageName": "curiosity_mars_rover_description",
+            "launchFile": "main_simple.launch",
+            "environmentVariables": {}
+          },
+          "simulationSoftwareSuite": {
+            "name": "Gazebo",
+            "version": "7"
+          },
+          "renderingEngine": {
+            "name": "OGRE",
+            "version": "1.x"
+          },
+          "robotSoftwareSuite": {
+            "name": "ROS",
+            "version": "Kinetic"
+          }
+        }
+      }
+    },
+    {
+      "id": "MartianDetector_wf1",
+      "type": "workflow",
+      "name": "Martian Detector - Build and Bundle All",
+      "runCfgIds": [
+        "robot-build",
+        "robot-bundle",
+        "simulation-build",
+        "simulation-bundle"
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,23 @@
+#!/usr/bin/env python
+
+import rospy
+
+from std_msgs.msg import String
+
+class MatrixUpdater():
+
+    def __init__(self):
+        self.image_sub = rospy.Subscriber ('/detected_objects', String, self.update_display)
+
+
+    def update_display(self): 
+        return
+
+def main():
+    rospy.init_node('lcd_matrix_updater')
+    matrix_updater = MatrixUpdater()
+    rospy.spin()
+
+
+if __name__ == '__main__':
+    main()

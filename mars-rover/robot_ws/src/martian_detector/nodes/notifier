@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+import rospy
+
+from std_msgs.msg import String
+
+class Notifier():
+
+    def __init__(self):
+        self.image_sub = rospy.Subscriber ('/detected_objects', String, self.notify)
+
+    def notify(self): 
+        return
+
+def main():
+    rospy.init_node('notifier')
+    notifier = Notifier()
+    rospy.spin()
+
+if __name__ == '__main__':
+    main()

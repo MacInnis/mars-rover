@@ -1,0 +1,10 @@
+.c9/*
+roboMakerLogs/*
+**/build
+**/bundle
+**/install
+**/log
+*.swp
+*.swo
+*.zip
+*.gz

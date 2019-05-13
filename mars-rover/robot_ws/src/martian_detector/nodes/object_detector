@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+
+import rospy
+
+from std_msgs.msg import String
+from sensor_msgs.msg import CompressedImage
+
+class ObjectDetector():
+
+    def __init__(self):
+        self.image_sub = rospy.Subscriber ('/image/compressed', CompressedImage, self.process_image)
+        self.pub = rospy.Publisher('/detected_objects', String, queue_size=1)
+
+    def process_image(self): 
+        return
+
+def main():
+    rospy.init_node('object_detector')
+    
+    detector = ObjectDetector()
+    
+    rate = rospy.Rate(10) # 10hz
+    while not rospy.is_shutdown():
+        rate.sleep()
+
+
+if __name__ == '__main__':
+    main()
