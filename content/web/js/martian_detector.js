@@ -67,7 +67,7 @@ $( function() {
     var previous = null;
     setInterval(function() {
         $.get( "objects.txt?" + "q=" + (new Date()).getTime(), function( data ) {
-            if( data !== previous) {
+            if( data !== previous && data.length > 0) {
                 var objects = data.split(',');
                 objects.forEach(function(foundItem) {
                     if (foundItem in foundObjects)

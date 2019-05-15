@@ -1,1 +1,0 @@
-Car,Truck,Dog,Alien,Cat,Mouse

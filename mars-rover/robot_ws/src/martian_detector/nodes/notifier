@@ -25,7 +25,9 @@ class Notifier():
             
         try:
             # log objects found to S3 for reporting
-            s3.Object(s3_bucket_name, 'rover-workshop/objects.txt').put(Body=found_objects)
+            s3.Object(s3_bucket_name, 'web/objects.txt').put(
+                ACL='public-read', 
+                Body=found_objects)
             
             #see if we found the search object.  if so, send alert.
             objects = found_objects.split(',')
