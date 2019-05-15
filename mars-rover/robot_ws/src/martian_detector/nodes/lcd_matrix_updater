@@ -7,7 +7,7 @@ from std_msgs.msg import String
 class MatrixUpdater():
 
     def __init__(self):
-        self.image_sub = rospy.Subscriber ('/detected_objects', String, self.update_display)
+        self.image_sub = rospy.Subscriber ('/object_found_alert', String, self.update_display)
 
 
     def update_display(self): 

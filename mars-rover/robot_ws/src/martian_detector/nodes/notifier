@@ -1,16 +1,46 @@
 #!/usr/bin/env python
-
 import rospy
-
+import boto3
 from std_msgs.msg import String
+
+aws_region = rospy.get_param('~/notifier/aws_region', 'us-west-2')
+s3_bucket_name = rospy.get_param('~/notifier/s3_bucket_name')
+search_object = rospy.get_param('~/notifier/search_object', 'Alien')
+phone_number = rospy.get_param('~/notifier/phone_number')
+
+s3 = boto3.resource('s3', aws_region)
+sns = boto3.client('sns', aws_region)
 
 class Notifier():
 
     def __init__(self):
-        self.image_sub = rospy.Subscriber ('/detected_objects', String, self.notify)
+        rospy.loginfo('Initializing Notifier node.')
+        self.object_sub = rospy.Subscriber ('/detected_objects', String, self.notify)
+        self.pub = rospy.Publisher('/object_found_alert', String, queue_size=1)
 
-    def notify(self): 
-        return
+    def notify(self, msg): 
+        
+        found_objects = msg.data
+        rospy.loginfo('Detected an object.  Object found: %s.', found_objects)                
+            
+        try:
+            # log objects found to S3 for reporting
+            s3.Object(s3_bucket_name, 'rover-workshop/objects.txt').put(Body=found_objects)
+            
+            #see if we found the search object.  if so, send alert.
+            objects = found_objects.split(',')
+            if search_object in objects:
+                
+                #publish alert so other nodes can react as necessary
+                self.pub.publish(search_object)
+
+                #send SMS message for the alert
+                sns.publish(
+                    PhoneNumber=phone_number,
+                    Message='Alert!  %s detected!' % search_object)
+
+        except Exception as e:
+            rospy.logerr('Error logging or sending alert. \n\n %s', str(e))
 
 def main():
     rospy.init_node('notifier')
