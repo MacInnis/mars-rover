@@ -2,19 +2,19 @@
 
 import rospy
 import boto3
-import cv2
-import numpy as np
 
 from std_msgs.msg import String
 from sensor_msgs.msg import CompressedImage
 
+
 CAMERA_TOPIC = rospy.get_param('~/object_detector/camera_topic', '/raspicam_node/image/compressed')
+AWS_REGION = rospy.get_param('~/object_detector/aws_region', 'us-west-2')
 
 class ObjectDetector():
 
     def __init__(self):
         self.pub = rospy.Publisher('/detected_objects', String, queue_size=1)
-        self.rekog = boto3.client('rekognition')
+        self.rekog = boto3.client('rekognition', AWS_REGION)
 
     def process_image(self):
         # Get picture from appropriate camera topic and send to Rekognition for labels

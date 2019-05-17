@@ -29,6 +29,10 @@
   <depend>ros_controllers</depend>
   <depend>teleop_twist_keyboard</depend>
 
+  <!-- Support camera operations -->
+  <depend>image_transport</depend>
+  <depend>compressed_image_transport</depend>
+
   <depend>xacro</depend>
 
   <export>
