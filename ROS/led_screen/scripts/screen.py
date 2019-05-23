@@ -26,8 +26,8 @@ class LedScreen():
 		self.ser = serial.Serial(dev,baud,timeout=1.0)
 		self.ser.flushInput()
 
-		self.out_msg = [-10] * 16
-		self.in_msg  = [-10] * 16
+		self.out_msg = [0] * 16
+		self.in_msg  = [0] * 16
 
 
 		self.b_low = 12.7
@@ -48,14 +48,14 @@ class LedScreen():
 		
 		self.send_init()
 
-	def build_msg(self,connected,battery,error,temp,currents):
+	def build_msg(self,connected,battery,error,temp,currents,face):
 		self.connected_check(1)
 		self.battery_check(battery)
 		self.error_check(error)
 		self.temp_check(temp)
 		self.drive_current_check(currents)
 		self.steering_current_check(currents)
-		self.out_msg[FACE] = 0x01
+		self.out_msg[FACE] = face
 		self.build_chksum()
 		print self.out_msg
 		self.send_msg()
@@ -200,10 +200,10 @@ class LedScreen():
 		while True:
 			init_packet = bytearray()
 			init_packet.append(0xA)
-			#print "init_packet",ord(init_packet)
+			print "init_packet",ord(init_packet)
 			self.ser.write(init_packet)
 			response = self.ser.read(2)
-			if (ord(response[0]) == 67 and ord(response[1]) == 68):
+			if len(response) >= 2 and (ord(response[0]) == 67 and ord(response[1]) == 68):
 				print "correct response received!"
 				break
 			time.sleep(0.5)

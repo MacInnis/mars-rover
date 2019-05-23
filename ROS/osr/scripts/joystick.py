@@ -21,13 +21,13 @@ def callback(data):
 	joy_out = Joystick()
 
 	y =  data.axes[1]
-	x = -data.axes[0]
-	x1 =-data.axes[3]
+	x =  data.axes[0]
+	x1 = data.axes[3]
 	rt = data.axes[2]
 
 	cmd = two_joy(x1,y,rt)
 
-	dpad = data.buttons[11:]
+	dpad = data.buttons[0:]
 	if 1 in dpad: mode = dpad.index(1)
 	now = time.time()
 
