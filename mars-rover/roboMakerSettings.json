@@ -38,11 +38,11 @@
     },
     {
       "id": "sim-robot-with-simple-world",
-      "name": "Rover - simple world",
+      "name": "Mars Rover Simulation",
       "type": "simulation",
       "cfg": {
         "simulation": {
-          "maxJobDurationInSeconds": 3600,
+          "maxJobDurationInSeconds": 14400,
           "failureBehavior": "Fail",
           "iamRole": "arn:aws:iam::765643008125:role/robomaker_role",
           "vpcConfig": {
@@ -101,7 +101,7 @@
     {
       "id": "MartianDetector_wf1",
       "type": "workflow",
-      "name": "Martian Detector - Build and Bundle All",
+      "name": "Mars Rover - Build and Bundle All",
       "runCfgIds": [
         "robot-build",
         "robot-bundle",
@@ -111,4 +111,3 @@
     }
   ]
 }
-

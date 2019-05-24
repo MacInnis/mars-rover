@@ -25,6 +25,7 @@ class ObjectDetector():
         try:
             response = self.rekog.detect_labels(
                 Image={'Bytes': img},
+                MinConfidence=80,
                 MaxLabels=10
             )
             labels = self.sort_labels(response)
@@ -38,8 +39,8 @@ class ObjectDetector():
         return
     
     def get_image(self):
-        '''receive one compressed image from camera and return raw image'''
         try:
+            # Get one image from the camera and return it
             image = rospy.wait_for_message(CAMERA_TOPIC, CompressedImage, timeout=3).data
         except Exception as e:
             rospy.logerr('Error getting image from camera: %s', e)
