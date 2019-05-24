@@ -1,6 +1,6 @@
 <launch>
     
-    <arg name="use_sim_tim" default="true" />
+        <arg name="use_sim_time" default="true" />
 	<arg name="aws_region" default="us-west-2" />
 
 	<node name="object_detector" pkg="martian_detector" type="object_detector" >
