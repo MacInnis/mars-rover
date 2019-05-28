@@ -1,6 +1,5 @@
 <launch>
-    
-        <arg name="use_sim_time" default="true" />
+    <arg name="use_sim_time" default="true" />
 	<arg name="aws_region" default="us-west-2" />
 
 	<node name="object_detector" pkg="martian_detector" type="object_detector" >
@@ -10,9 +9,8 @@
 
 	<node name="notifier" pkg="martian_detector" type="notifier" >
 	    <param name="aws_region" value="$(arg aws_region)" />
-	    <param name="s3_bucket_name" value="ajmac-robomaker" />
-	    <param name="phone_number" value="+15128888829" type="str" />
+	    <param name="s3_bucket_name" value="<your-bucket-name>" />
+	    <param name="phone_number" value="<your-phone-number>" type="str" />
 	    <param name="search_object" value="Alien" />
 	</node>
-
 </launch>

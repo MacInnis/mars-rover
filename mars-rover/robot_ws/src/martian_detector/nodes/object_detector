@@ -18,9 +18,14 @@ class ObjectDetector():
 
     def process_image(self):
         # Get picture from appropriate camera topic and send to Rekognition for labels
-        rospy.loginfo('Processing image via Amazon Rekognition')
+        rospy.loginfo('Getting image from camera')
         img = self.get_image()
 
+        if img is None:
+            # No image was returned
+            rospy.logwarn('No image was returned from the camera.')
+
+        rospy.loginfo('Sending image to Rekognition for analysis.')
         # Call Rekognition
         try:
             response = self.rekog.detect_labels(
@@ -30,6 +35,9 @@ class ObjectDetector():
             )
             labels = self.sort_labels(response)
             rospy.loginfo('Following labels detected: %s' % (labels))
+            
+            # OPTIONAL TO-DO:  Search for Matt Damon
+
         except Exception as e:
             rospy.logerr('Error processing Rekognition: %s', e)
         else:
@@ -39,6 +47,7 @@ class ObjectDetector():
         return
     
     def get_image(self):
+        image = None
         try:
             # Get one image from the camera and return it
             image = rospy.wait_for_message(CAMERA_TOPIC, CompressedImage, timeout=3).data

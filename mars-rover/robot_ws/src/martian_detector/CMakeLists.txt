@@ -63,7 +63,6 @@ include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} )
 catkin_install_python(PROGRAMS
   nodes/notifier
   nodes/object_detector
-  nodes/lcd_matrix_updater
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
