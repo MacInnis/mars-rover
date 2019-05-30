@@ -35,6 +35,7 @@ class Notifier():
             #see if we found the search object.  if so, send alert.
             objects = found_objects.split(',')
             if search_object in objects:
+                rospy.loginfo('Found %s! Just what I was looking for!', search_object)
                 
                 #Alien found.  Send message to LED topic so the display will update if it's being used.
                 led_msg.data = [2, 1] # ^^

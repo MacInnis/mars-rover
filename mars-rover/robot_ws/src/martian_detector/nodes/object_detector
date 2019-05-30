@@ -2,19 +2,31 @@
 
 import rospy
 import boto3
+import time
 
 from std_msgs.msg import String
-from sensor_msgs.msg import CompressedImage
-
+from sensor_msgs.msg import CompressedImage, Joy
 
 CAMERA_TOPIC = rospy.get_param('~/object_detector/camera_topic', '/raspicam_node/image/compressed')
 AWS_REGION = rospy.get_param('~/object_detector/aws_region', 'us-west-2')
+AUTO_CAPTURE = rospy.get_param('~/object_detector/auto_capture', True)
+AUTO_CAPTURE_RATE = 1 # When using auto capture, take a photo every second
+IMAGE_CAPTURE_WAIT = 3 # At least 3 seconds between image captures to not spam rekognition
 
 class ObjectDetector():
 
     def __init__(self):
         self.pub = rospy.Publisher('/detected_objects', String, queue_size=1)
         self.rekog = boto3.client('rekognition', AWS_REGION)
+        self.joysub = rospy.Subscriber("/joy", Joy, self.joystick_input)
+        self.last_image_time = 0
+
+    def joystick_input(self, data):
+        dpad = data.buttons[0:]
+        button_pressed = any(dpad)
+        if button_pressed and time.time() > self.last_image_time + IMAGE_CAPTURE_WAIT:
+            self.last_image_time = time.time()
+            self.process_image()
 
     def process_image(self):
         # Get picture from appropriate camera topic and send to Rekognition for labels
@@ -70,9 +82,10 @@ def main():
     
     detector = ObjectDetector()
     
-    rate = rospy.Rate(1) # Process an image once a second
+    rate = rospy.Rate(AUTO_CAPTURE_RATE) # Process an image once a second
     while not rospy.is_shutdown():
-        detector.process_image()
+        if AUTO_CAPTURE == True:
+            detector.process_image()
         rate.sleep()
 
 
