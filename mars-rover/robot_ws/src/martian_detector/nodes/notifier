@@ -7,7 +7,7 @@ from std_msgs.msg import Int64MultiArray
 aws_region = rospy.get_param('~/notifier/aws_region', 'us-west-2')
 s3_bucket_name = rospy.get_param('~/notifier/s3_bucket_name')
 search_object = rospy.get_param('~/notifier/search_object', 'Alien')
-phone_number = rospy.get_param('~/notifier/phone_number')
+phone_number = rospy.get_param('~/notifier/phone_number', '')
 
 s3 = boto3.resource('s3', aws_region)
 sns = boto3.client('sns', aws_region)
@@ -42,9 +42,9 @@ class Notifier():
                 self.pub.publish(led_msg)
 
                 #send SMS message for the alert
-                sns.publish(
-                    PhoneNumber=phone_number,
-                    Message='Alert!  %s detected!' % search_object)
+                if phone_number and len(phone_number) > 8: 
+                    rospy.loginfo('Sending SMS to %s', phone_number)
+                    sns.publish(PhoneNumber=phone_number, Message='Alert!  %s detected!' % search_object)
             else:
                 #No alien found.  Publish message for simple face
                 led_msg.data = [0, 1] # -_-
