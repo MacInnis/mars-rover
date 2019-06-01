@@ -30,13 +30,11 @@ class ObjectDetector():
         try:
             response = self.rekog.detect_labels(
                 Image={'Bytes': img},
-                MinConfidence=80,
+                MinConfidence=50,
                 MaxLabels=10
             )
             labels = self.sort_labels(response)
             rospy.loginfo('Following labels detected: %s' % (labels))
-            
-            # OPTIONAL TO-DO:  Search for Matt Damon
 
         except Exception as e:
             rospy.logerr('Error processing Rekognition: %s', e)
