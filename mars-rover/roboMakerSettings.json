@@ -45,6 +45,7 @@
           "maxJobDurationInSeconds": 14400,
           "failureBehavior": "Fail",
           "iamRole": "",
+          "outputLocation": "",
           "vpcConfig": {
             "subnets": [
               "",
@@ -55,14 +56,13 @@
             ],
             "assignPublicIp": true
           },
-          "outputLocation": "",
           "tags": {}
         },
         "robotApp": {
           "name": "martian-detector-robot",
           "sourceBundleFile": "./mars-rover/mars-rover/robot_ws/bundle/output.tar",
-          "architecture": "X86_64",
           "s3Bucket": "",
+          "architecture": "X86_64",
           "launchConfig": {
             "packageName": "martian_detector",
             "launchFile": "martian_detector.launch",
@@ -117,8 +117,15 @@
         "robot-build",
         "robot-bundle"
       ]
+    },
+    {
+      "id": "MartianDetector_wf3",
+      "type": "workflow",
+      "name": "Mars Rover - Build and Bundle Simulation",
+      "runCfgIds": [
+        "simulation-build",
+        "simulation-bundle"
+      ]
     }
-
-
   ]
 }

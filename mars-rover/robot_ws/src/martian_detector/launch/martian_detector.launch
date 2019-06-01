@@ -1,7 +1,7 @@
 <launch>
     <arg name="use_sim_time" default="true" />
 	<arg name="aws_region" default="us-west-2" />
-	<arg name="auto_capture" default="true" />
+	<arg name="auto_capture" default="false" />
 
 	<node name="object_detector" pkg="martian_detector" type="object_detector">
 		<param name="camera_topic" value="/raspicam_node/image/compressed" />

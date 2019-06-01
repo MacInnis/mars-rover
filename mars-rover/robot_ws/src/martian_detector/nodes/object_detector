@@ -24,6 +24,8 @@ class ObjectDetector():
     def joystick_input(self, data):
         dpad = data.buttons[0:]
         button_pressed = any(dpad)
+        rospy.loginfo('Joystick input detected.  Button pressed: %s.' % str(button_pressed))
+
         if button_pressed and time.time() > self.last_image_time + IMAGE_CAPTURE_WAIT:
             self.last_image_time = time.time()
             self.process_image()
